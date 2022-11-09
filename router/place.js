@@ -25,6 +25,6 @@ router.post('/place/addPlace',placeHandler.addPlace)
 //根据id更新数据
 router.post('/place/updatePlaceListById',placeHandler.updatePlaceListById)
 //根据id删除地点
-router.post('/place/deletePlaceListById',placeHandler.deletePlaceListById)
+router.post('/place/deletePlaceById',placeHandler.deletePlaceById)
 
 module.exports=router
