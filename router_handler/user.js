@@ -21,7 +21,10 @@ exports.userReguser = (req, res) => {
         }
         const insertUserSql = 'insert into user set ?'
         db.query(insertUserSql,
-            { userName: userInfo.userName, password: userInfo.password },
+            { userName: userInfo.userName, 
+                password: userInfo.password,
+                type:0,
+                nickName:'用户'+Math.random().toString(36).slice(2,8) },
             (err, result) => {
                 if (err) {
                     return res.cc('数据库操作失败', 301)
@@ -37,7 +40,6 @@ exports.userReguser = (req, res) => {
 }
 exports.userLogin = (req, res) => {
     const userInfo = req.body
-    console.log(userInfo)
     if (!userInfo.userName || !userInfo.password) {
         return res.cc('用户名或密码为空')
     }
