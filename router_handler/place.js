@@ -13,12 +13,23 @@ exports.getAllPlace = (req, res) => {
 }
 //分页查询列表
 exports.getPlaceList = (req, res) => {
-    const searchInfo = {
-        page: (req.query.page - 1) * req.query.size,
-        size: req.query.size * 1
+    
+    const searchList=[]
+    let selectSql = 'select * from place where 1=1'
+    if(req.query.placeType){
+        selectSql+=' and placeType= ?'
+        searchList.push(req.query.placeType)
+        console.log(selectSql)
     }
-    const selectSql = 'select * from place limit ?,?'
-    db.query(selectSql, [searchInfo.page, searchInfo.size], (err, result) => {
+    if(req.query.page&&req.query.size){
+        selectSql=selectSql.concat(' limit ?,?')
+        searchList.push((req.query.page - 1) * req.query.size)
+        searchList.push(req.query.size* 1)
+        console.log(selectSql)
+    }
+    
+   console.log(selectSql)
+    db.query(selectSql, searchList, (err, result) => {
         if (err) {
             return res.cc(err)
         }

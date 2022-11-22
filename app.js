@@ -32,6 +32,7 @@ const expressJWT=require('express-jwt')
 const tokenConfig=require('./until/tokenConfig')
 app.use(expressJWT({secret:tokenConfig.jwtSecretKey}).unless({path:[/^\/api\/user\//]}))
 
+const {Joi,expressJoi}=require('./until/Joi')
 //引入路由
 const userRouter=require('./router/user')
 const userInfoRouter=require('./router/userInfo')
@@ -42,7 +43,10 @@ app.use('/api',userInfoRouter)
 app.use('/api',placeRouter)
 //全局错误中间件
 app.use((err,req, res,next) =>{
-    if(err.name==='UnauthorizedError') return res.cc('身份认证失败',501)
+    if(err.name==='UnauthorizedError') return res.cc('身份认证失败',401)
+    if (err instanceof Joi.ValidationError) {
+      return res.cc(err.message,1)
+    }
      res.status(404).send("服务器发生了错误",404)
 })
 

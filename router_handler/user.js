@@ -8,16 +8,13 @@ const jwt = require('jsonwebtoken')
 const tokenConfig = require('../until/tokenConfig')
 exports.userReguser = (req, res) => {
     const userInfo = req.body
-    if (!userInfo.userName || !userInfo.password) {
-        return res.send({ status: 201, message: '用户名或密码格式有误' })
-    }
     const selectSql = 'select * from user where userName=?'
     db.query(selectSql, [userInfo.userName], (err, result) => {
         if (err) {
             return res.cc('数据库查询失败', 501)
         }
         if (result.length > 0) {
-            return res.cc('该用户已经存在', 301)
+            return res.cc('该用户已经存在', 201)
         }
         const insertUserSql = 'insert into user set ?'
         db.query(insertUserSql,
@@ -27,10 +24,10 @@ exports.userReguser = (req, res) => {
                 nickName:'用户'+Math.random().toString(36).slice(2,8) },
             (err, result) => {
                 if (err) {
-                    return res.cc('数据库操作失败', 301)
+                    return res.cc('数据库操作失败', 501)
                 }
                 if (result.affectedRows !== 1) {
-                    return res.cc('用户注册失败', 301)
+                    return res.cc('用户注册失败', 501)
                 }
                 return res.cc('注册成功', 200)
             })
@@ -40,9 +37,6 @@ exports.userReguser = (req, res) => {
 }
 exports.userLogin = (req, res) => {
     const userInfo = req.body
-    if (!userInfo.userName || !userInfo.password) {
-        return res.cc('用户名或密码为空')
-    }
     const selectSql = 'select * from user where userName=?'
     db.query(selectSql, [userInfo.userName], (err, result) => {
         if (err) {
