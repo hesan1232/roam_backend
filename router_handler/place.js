@@ -13,34 +13,36 @@ exports.getAllPlace = (req, res) => {
 }
 //分页查询列表
 exports.getPlaceList = (req, res) => {
-    
+    const searchInfo=req.query
     const searchList=[]
+    const resDate={}
     let selectSql = 'select * from place where 1=1'
-    if(req.query.placeType){
+    if(searchInfo.placeName){
+        selectSql+=' and placeName like ? '
+        searchList.push(`%${req.query.placeName}%`)   
+    }
+    if(searchInfo.placeType){
         selectSql+=' and placeType= ?'
-        searchList.push(req.query.placeType)
-        console.log(selectSql)
+        searchList.push(searchInfo.placeType)   
     }
-    if(req.query.page&&req.query.size){
-        selectSql=selectSql.concat(' limit ?,?')
-        searchList.push((req.query.page - 1) * req.query.size)
-        searchList.push(req.query.size* 1)
-        console.log(selectSql)
-    }
-    
-   console.log(selectSql)
+
     db.query(selectSql, searchList, (err, result) => {
         if (err) {
             return res.cc(err)
-        }
-        const selectAllSql = 'select * from place'
-        db.query(selectAllSql, (e, AllList) => {
-            if (err) {
-                return res.cc(err)
-            }
-            res.cc('请求成功', 200, { placeList: result, total: AllList.length })
-        })
-
+        }  
+        resDate.total=result.length
+        if(searchInfo.page&&searchInfo.size){
+            selectSql=selectSql.concat(' limit ?,?')
+            searchList.push((searchInfo.page - 1) * searchInfo.size)
+            searchList.push(searchInfo.size* 1)  
+            db.query(selectSql, searchList, (err, result) => {
+                if (err) {
+                    return res.cc(err)
+                }  
+                resDate.placeList=result
+                res.cc('请求成功', 200, resDate)
+            })  
+        }      
     })
 }
 //通过地点名字地点详细信息
