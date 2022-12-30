@@ -20,7 +20,7 @@ exports.userReguser = (req, res) => {
         db.query(insertUserSql,
             { userName: userInfo.userName, 
                 password: userInfo.password,
-                type:0,
+                type:1,
                 nickName:'用户'+Math.random().toString(36).slice(2,8) },
             (err, result) => {
                 if (err) {

@@ -43,7 +43,7 @@ app.use('/api',userInfoRouter)
 app.use('/api',placeRouter)
 //全局错误中间件
 app.use((err,req, res,next) =>{
-    if(err.name==='UnauthorizedError') return res.cc('身份认证失败',401)
+    if(err.name==='UnauthorizedError') return res.cc('token失效，请重新登录',401)
     if (err instanceof Joi.ValidationError) {
       return res.cc(err.message,1)
     }
