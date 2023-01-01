@@ -37,10 +37,10 @@ const {Joi,expressJoi}=require('./until/Joi')
 const userRouter=require('./router/user')
 const userInfoRouter=require('./router/userInfo')
 const placeRouter=require('./router/place')
+const interactRouter=require('./router/interact')
 //使用路由模块
-app.use('/api',[userRouter])
-app.use('/api',userInfoRouter)
-app.use('/api',placeRouter)
+app.use('/api',[userRouter,userInfoRouter,placeRouter,interactRouter])
+
 //全局错误中间件
 app.use((err,req, res,next) =>{
     if(err.name==='UnauthorizedError') return res.cc('token失效，请重新登录',401)

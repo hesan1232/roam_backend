@@ -105,10 +105,10 @@ exports.addPlace = (req, res) => {
 }
 
 //更新地点信息
-exports.updatePlaceListById = (req, res) => {
+exports.updatePlaceById = (req, res) => {
     const placeInfo = req.body
     const updateSql = 'update place set placeName= ? ,placeType= ? , placeX = ?,placeY = ?,description= ? ,ImgUrl= ? where id=? '
-    db.query(updateSql, [placeInfo.placeName, placeInfo.placeType, placeInfo.placeX, placeInfo.placeY, placeInfo.description, placeInfo.ImgUrl, req.body.id], (err, result) => {
+    db.query(updateSql, [placeInfo.placeName, placeInfo.placeType, placeInfo.placeX, placeInfo.placeY, placeInfo.description, placeInfo.ImgUrl, placeInfo.id], (err, result) => {
         if (err) {
             return res.cc(err)
         }
@@ -131,8 +131,5 @@ exports.deletePlaceById = (req, res) => {
             }
             return res.cc('删除成功', 200)
         })
-
     })
-
-
 }
