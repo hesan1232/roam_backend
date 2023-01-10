@@ -45,8 +45,8 @@ exports.getMenuList = (req, res) => {
 //修改用户信息
 exports.updateUserInfo = (req, res) => {
     const userInfo=req.body
-    const updateSql='update user set userName= ? ,password= ? , nickName = ?,userAvater= ? where id=? '
-    db.query(updateSql,[userInfo.userName,userInfo.password,userInfo.nickName,userInfo.userAvater,req.user.id],(err,result)=>{
+    const updateSql='update user set userName= ? , nickName = ?,userAvater= ? where id=? '
+    db.query(updateSql,[userInfo.userName,userInfo.nickName,userInfo.userAvater,req.user.id],(err,result)=>{
         if (err) {
             return res.cc(err)
         }
