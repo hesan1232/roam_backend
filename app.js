@@ -38,8 +38,9 @@ const userRouter=require('./router/user')
 const userInfoRouter=require('./router/userInfo')
 const placeRouter=require('./router/place')
 const interactRouter=require('./router/interact')
+const backendRouter=require('./router/backendRouter')
 //使用路由模块
-app.use('/api',[userRouter,userInfoRouter,placeRouter,interactRouter])
+app.use('/api',[userRouter,userInfoRouter,placeRouter,interactRouter,backendRouter])
 
 //全局错误中间件
 app.use((err,req, res,next) =>{
