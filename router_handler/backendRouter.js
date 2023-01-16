@@ -43,7 +43,15 @@ exports.getRouter = (req, res) => {
     })
     }
    else{
-        res.cc('请求成功', 200, {type:'普通用户'})
+        res.cc('请求成功', 200, {type:'普通用户',Router:[     
+            {
+             path:'individualManage',
+             component:"IndividualManage",
+             meta:{
+                 title:'个人信息'
+             }
+            } 
+         ]})
     }
     // db.query(selectSql, searchList, (err, result) => {
     //     if (err) {
