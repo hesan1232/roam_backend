@@ -2,8 +2,9 @@
 const express=require('express')
 const app=express()
 
+const path = require('path');
 //对外暴漏静态资源
-app.use(express.static('public'))
+app.use(express.static(path.join(__dirname, 'public')))
 //引入跨域包
 const cors=require('cors')
 app.use(cors())
