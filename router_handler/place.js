@@ -107,8 +107,8 @@ exports.addPlace = (req, res) => {
 //更新地点信息
 exports.updatePlaceById = (req, res) => {
     const placeInfo = req.body
-    const updateSql = 'update place set placeName= ? ,placeType= ? , placeX = ?,placeY = ?,description= ? ,ImgUrl= ? where id=? '
-    db.query(updateSql, [placeInfo.placeName, placeInfo.placeType, placeInfo.placeX, placeInfo.placeY, placeInfo.description, placeInfo.ImgUrl, placeInfo.id], (err, result) => {
+    const updateSql = 'update place set placeName= ? ,placeType= ? , placeX = ?,placeY = ?,Link = ? , description= ? ,ImgUrl= ? where id=? '
+    db.query(updateSql, [placeInfo.placeName, placeInfo.placeType, placeInfo.placeX, placeInfo.placeY, placeInfo.Link, placeInfo.description, placeInfo.ImgUrl, placeInfo.id], (err, result) => {
         if (err) {
             return res.cc(err)
         }

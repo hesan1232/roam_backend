@@ -11,9 +11,9 @@ exports.getInteractList = (req, res) => {
         selectSql+=' and placeName like ? '
         searchList.push(`%${req.query.placeName}%`)   
     }
-    if(searchInfo.userName){
-        selectSql+=' and userName= ?'
-        searchList.push(searchInfo.userName)   
+    if(searchInfo.nickName){
+        selectSql+=' and nickName= ?'
+        searchList.push(searchInfo.nickName)   
     }
 
     db.query(selectSql, searchList, (err, result) => {
@@ -39,8 +39,8 @@ exports.getInteractList = (req, res) => {
 //增加评论信息
 exports.addInteract = (req, res) => {
     const interactInfo = req.body
-    const insertSql = 'insert into interact set userName= ? ,comments= ? '
-    db.query(insertSql, [req.user.userName, interactInfo.comments], (err, result) => {
+    const insertSql = 'insert into interact set nickName= ? ,comments= ? '
+    db.query(insertSql, [req.user.nickName, interactInfo.comments], (err, result) => {
         if (err) {
             return res.cc(err)
         }
