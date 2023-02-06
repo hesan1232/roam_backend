@@ -69,7 +69,7 @@ exports.getPlaceById = (req, res) => {
 }
 //返回所地点类型
 exports.getPlaceTypeList = (req, res) => {
-    const selectSql = 'select id,placeType from place where id in (select max(id) from place group by  placeType ) '
+    const selectSql = 'select id,placeType,url,hot from placetype '
     db.query(selectSql, (err, result) => {
         if (err) {
             return res.cc(err)
