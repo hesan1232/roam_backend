@@ -4,7 +4,7 @@ const db = require('../db')
 //查询路由模块
 exports.getRouter = (req, res) => {
     const searchInfo=req.query
-    let selectSql = 'select id,title,routingPath,componentPath,menuIcon from router where permissions >= ?'
+    let selectSql = 'select id,title,routingPath,componentPath,menuIcon,url from router where permissions >= ?'
     
     db.query(selectSql, [req.user.type], (err, result) => {
         if (err) {
