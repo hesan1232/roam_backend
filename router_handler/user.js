@@ -20,8 +20,9 @@ exports.userReguser = (req, res) => {
         db.query(insertUserSql,
             { userName: userInfo.userName, 
                 password: userInfo.password,
-                type:1,
-                nickName:'用户'+Math.random().toString(36).slice(2,8) },
+                type:userInfo.type,
+                userAvater:'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
+                nickName:'用户'+Math.random().toString(36).slice(2,6) },
             (err, result) => {
                 if (err) {
                     return res.cc('数据库操作失败', 501)

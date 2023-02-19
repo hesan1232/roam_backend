@@ -47,8 +47,8 @@ exports.getPlaceList = (req, res) => {
 }
 //通过地点名字地点详细信息
 exports.getPlaceByPlaceName = (req, res) => {
-    const selectSql = 'select * from place where placeName like ?'
-    db.query(selectSql, `%${req.query.placeName}%`, (err, result) => {
+    const selectSql = 'select * from place where placeName like ? or placeType like ? '
+    db.query(selectSql,[`%${req.query.placeName}%`,`%${req.query.placeName}%`], (err, result) => {
         if (err) {
             return res.cc(err)
         }
@@ -126,6 +126,22 @@ exports.deletePlaceById = (req, res) => {
         }
         const deleteSql = 'delete from place  where id=? '
         db.query(deleteSql, req.body.id, (err, result) => {
+            if (err) {
+                return res.cc(err)
+            }
+            return res.cc('删除成功', 200)
+        })
+    })
+}
+//根据id增加热度
+exports.addPlaceHotById = (req, res) => {
+    const selectSql = 'select * from place where id = ?'
+    db.query(selectSql, req.body.id, (e, selectResult) => {
+        if (e) {
+            return res.cc(e)
+        }
+        const deleteSql = 'update place set hot = ?  where id=? '
+        db.query(deleteSql, [selectResult[0].hot+1,req.body.id], (err, result) => {
             if (err) {
                 return res.cc(err)
             }
