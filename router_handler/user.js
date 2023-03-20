@@ -8,6 +8,7 @@ const jwt = require('jsonwebtoken')
 const tokenConfig = require('../until/tokenConfig')
 exports.userReguser = (req, res) => {
     const userInfo = req.body
+    console.log(userInfo)
     const selectSql = 'select * from user where userName=?'
     db.query(selectSql, [userInfo.userName], (err, result) => {
         if (err) {

@@ -1,10 +1,11 @@
 //导入express模块
 const express=require('express')
 const app=express()
-
+const multer=require('multer')
 const path = require('path');
 //对外暴漏静态资源
-app.use(express.static(path.join(__dirname, 'public')))
+app.use("/public/", express.static(path.join(__dirname, "./public")));
+
 //引入跨域包
 const cors=require('cors')
 app.use(cors())
@@ -40,8 +41,9 @@ const userInfoRouter=require('./router/userInfo')
 const placeRouter=require('./router/place')
 const interactRouter=require('./router/interact')
 const backendRouter=require('./router/backendRouter')
+const bupLoadRouter=require('./router/upLoad')
 //使用路由模块
-app.use('/api',[userRouter,userInfoRouter,placeRouter,interactRouter,backendRouter])
+app.use('/api',[userRouter,userInfoRouter,placeRouter,interactRouter,backendRouter,bupLoadRouter])
 
 //全局错误中间件
 app.use((err,req, res,next) =>{
@@ -49,6 +51,9 @@ app.use((err,req, res,next) =>{
     if (err instanceof Joi.ValidationError) {
       return res.cc(err.message,1)
     }
+    if (err instanceof multer.MulterError) {
+      return res.cc(err.message,501,{err})
+    } 
      res.status(404).send("服务器发生了错误",404)
 })
 
