@@ -48,10 +48,6 @@ function uploadImage(req, res) {
             } else {
                 // hanldeImgDelAndRename(req.file.filename, handlePath('../../../backend/roam_backend/public'))
                 const { file } = req
-                const fileSize = parseInt(req.file.size)
-                if (fileSize > 1048576) {
-                    reject(err)
-                }
                 fs.renameSync(file.path, `public/${file.originalname}`)
                 file.path = `public/${file.originalname}`
                 // 拼接成完整的服务器静态资源图片路径
