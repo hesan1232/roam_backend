@@ -13,15 +13,23 @@ const userReguserRule={
         password: Joi.string()
           .pattern(/^[\S]{6,15}$/)
           .required(),
-        repassword: Joi.ref('password')
+        repassword: Joi.ref('password'),
+        type:Joi.required()
       }
 }
-
+const userLoginRule={
+  body: {
+      userName: Joi.string().alphanum().min(3).max(12).required(),
+      password: Joi.string()
+        .pattern(/^[\S]{6,15}$/)
+        .required(),
+    }
+}
 //用户注册
 router.post('/user/reguser',expressJoi(userReguserRule),userHandler.userReguser)
 
 //用户登录
-router.post('/user/login',expressJoi(userReguserRule),userHandler.userLogin)
+router.post('/user/login',expressJoi(userLoginRule),userHandler.userLogin)
 
 
 
