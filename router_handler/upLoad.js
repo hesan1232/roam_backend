@@ -14,5 +14,6 @@ exports.upLoadImg =async  (req, res,) => {
         console.log(error instanceof multer.MulterError)
         res.cc('失败',502,{error})
       }
+      console.log("小笼包在此！！");
     
 }
