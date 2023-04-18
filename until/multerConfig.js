@@ -33,7 +33,7 @@ const multerConfig = multer({
     storage,
     limits: {
         files: 5, // allow up to 5 files per request,
-        fileSize: 1048576*2, // 1 Mb
+        fileSize: 1048576*20, // 20 Mb
     },
     fileFilter
 })
