@@ -1,6 +1,6 @@
 //导入数据库模块
 const db = require('../db')
-
+const {numberChangeCh} =require('../until/toolFunction')
 //获取全部地点列表
 exports.getAllPlace = (req, res) => {
     const selectSql = 'select * from place'
@@ -13,42 +13,46 @@ exports.getAllPlace = (req, res) => {
 }
 //分页查询列表
 exports.getPlaceList = (req, res) => {
-    const searchInfo=req.query
-    const searchList=[]
-    const resDate={}
+    const searchInfo = req.query
+    const searchList = []
+    const resDate = {}
     let selectSql = 'select * from place where 1=1'
-    if(searchInfo.placeName){
-        selectSql+=' and placeName like ? '
-        searchList.push(`%${req.query.placeName}%`)   
+    if (searchInfo.placeName) {
+        selectSql += ' and placeName like ? '
+        searchList.push(`%${req.query.placeName}%`)
     }
-    if(searchInfo.placeType){
-        selectSql+=' and placeType= ?'
-        searchList.push(searchInfo.placeType)   
+    if (searchInfo.placeType) {
+        selectSql += ' and placeType= ?'
+        searchList.push(searchInfo.placeType)
     }
 
     db.query(selectSql, searchList, (err, result) => {
         if (err) {
             return res.cc(err)
-        }  
-        resDate.total=result.length
-        if(searchInfo.page&&searchInfo.size){
-            selectSql=selectSql.concat(' limit ?,?')
+        }
+        resDate.total = result.length
+        if (searchInfo.page && searchInfo.size) {
+            selectSql = selectSql.concat(' limit ?,?')
             searchList.push((searchInfo.page - 1) * searchInfo.size)
-            searchList.push(searchInfo.size* 1)  
+            searchList.push(searchInfo.size * 1)
             db.query(selectSql, searchList, (err, result) => {
                 if (err) {
                     return res.cc(err)
-                }  
-                resDate.placeList=result
+                }
+                resDate.placeList = result
                 res.cc('请求成功', 200, resDate)
-            })  
-        }      
+            })
+        }
     })
 }
-//通过地点名字地点详细信息
+//通过地点名字地点、类型模糊查询
 exports.getPlaceByPlaceName = (req, res) => {
+ 
+    let selectStr = numberChangeCh(req.query.placeName)
+
     const selectSql = 'select * from place where placeName like ? or placeType like ? '
-    db.query(selectSql,[`%${req.query.placeName}%`,`%${req.query.placeName}%`], (err, result) => {
+    
+    db.query(selectSql, [`%${selectStr}%`, `%${selectStr}%`], (err, result) => {
         if (err) {
             return res.cc(err)
         }
@@ -141,7 +145,7 @@ exports.addPlaceHotById = (req, res) => {
             return res.cc(e)
         }
         const deleteSql = 'update place set hot = ?  where id=? '
-        db.query(deleteSql, [selectResult[0].hot+1,req.body.id], (err, result) => {
+        db.query(deleteSql, [selectResult[0].hot + 1, req.body.id], (err, result) => {
             if (err) {
                 return res.cc(err)
             }
